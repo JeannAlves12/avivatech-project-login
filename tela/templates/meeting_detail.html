@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .meeting-detail {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .meeting-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #e3e1e1;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .meeting-title {
+        font-size: 2rem;
+        color: #000; /* Cor do título alterada para amarelo */
+    }
+
+    .meeting-date {
+        font-size: 1rem;
+        color: #fff; /* Cor da data alterada para amarelo */
+    }
+
+    .meeting-content {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .meeting-problem {
+        background-color: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #000;
+        font-style: italic;
+        color: #333;
+    }
+
+    .button-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #000; /* Cor de fundo da ação principal alterada para preto */
+    }
+
+    .btn-primary:hover {
+        background-color: #333; /* Cor de fundo da ação principal em hover alterada para cinza escuro */
+    }
+
+    .btn-danger {
+        background-color: #d9534f; /* Cor de fundo da ação perigosa */
+    }
+
+    .btn-danger:hover {
+        background-color: #d2221c; /* Cor de fundo da ação perigosa em hover */
+    }
+
+    .btn-secondary {
+        background-color: #000; /* Cor de fundo da ação secundária alterada para preto */
+    }
+
+    .btn-secondary:hover {
+        background-color: #333; /* Cor de fundo da ação secundária em hover alterada para cinza escuro */
+    }
+  </style>
+
+  <div class="meeting-detail">
+    <!-- Cabeçalho com o título da reunião e a data -->
+    <div class="meeting-header">
+      <h1 class="meeting-title">{{ meeting.meeting }}</h1>
+      <p class="meeting-date">Data: {{ meeting.date|date:"d/m/Y" }}</p>
+    </div>
+
+    <!-- Descrição da reunião -->
+    <div class="meeting-content">
+      <h2>Detalhes do Problema:</h2>
+      <p class="meeting-problem">{{ meeting.problem|default:"Nenhum problema relatado." }}</p>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="button-container">
+      {% if user.is_authenticated %}
+        <a href="{% url 'meeting_update' pk=meeting.pk %}" class="btn btn-primary">Editar Reunião</a>
+        <a href="{% url 'meeting_delete' pk=meeting.pk %}" class="btn btn-danger">Deletar Reunião</a>
+      {% endif %}
+      <a href="{% url 'tela' %}" class="btn btn-secondary">Voltar à lista de reuniões</a>
+    </div>
+  </div>
+{% endblock %}

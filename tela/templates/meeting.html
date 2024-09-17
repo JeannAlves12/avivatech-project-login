@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .meeting-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 20px;
+    }
+
+    .meeting-card {
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .meeting-card:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .meeting-card h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin: 10px;
+    }
+
+    .meeting-card p {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .meeting-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        text-align: center;
+        padding: 20px;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #333;
+        border-radius: 4px;
+        margin-right: 10px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+    input[type="text"]:focus {
+        outline: none;
+        border-color: #000;
+    }
+
+    button[type="submit"] {
+        background-color: #000;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #000;
+    }
+
+    a {
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #000;
+    }
+
+    .no-results {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+    }
+  </style>
+
+  <!-- Formulário de busca -->
+  <form method="GET" action="{% url 'tela' %}">
+    <input type="text" name="search" placeholder="Buscar reunião...">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <!-- Grid de reuniões -->
+  <div class="meeting-grid">
+    {% if tela %}
+      {% for meeting in tela %}
+        <a href="{% url 'meeting_detail' meeting.pk %}">
+          <div class="meeting-card">
+            <h2>{{ meeting.meeting }}</h2>
+            <p>Data: {{ meeting.date|date:"d/m/Y" }}</p>
+            <p>Problema: {{ meeting.problem|truncatewords:20 }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    {% else %}
+      <p class="no-results">Nenhuma reunião encontrada.</p>
+    {% endif %}
+  </div>
+{% endblock %}
